@@ -211,7 +211,7 @@ def readme():
                     for _, slug, title, result, _ in PROJECTS)
     pills = ''.join(f'<a href="{url}"><img src="assets/link-{label.lower()}.svg" alt="{label.title()}" width="20%"></a>'
                     for label, url in CONTACT)
-    return f'''<a href="{site}/"><img src="assets/header.svg" alt="Josh Wright, AI Engineer" width="100%"></a>
+    return f'''<a href="{site}/"><img src="assets/hero.svg" alt="Josh Wright, AI Engineer" width="100%"></a>
 <img src="assets/marquee.svg" alt="" width="100%">
 <img src="assets/about.svg" alt="{esc(ABOUT)}" width="100%">
 <p>{cards}</p>
@@ -223,7 +223,7 @@ if __name__ == '__main__':
     OUT.mkdir(exist_ok=True)
     for old in OUT.iterdir():
         old.unlink()
-    (OUT / 'header.svg').write_text(header(), encoding='utf-8')
+    (OUT / 'hero.svg').write_text(header(), encoding='utf-8')
     (OUT / 'marquee.svg').write_text(marquee(), encoding='utf-8')
     (OUT / 'about.svg').write_text(about(), encoding='utf-8')
     for i, (poster, slug, title, result, tags) in enumerate(PROJECTS, 1):
