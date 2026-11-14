@@ -75,26 +75,44 @@ def header():
 
 
 def marquee():
-    W, H, size, gap = 1200, 96, 34, 70
-    widths = [len(w) * size * 0.66 for w in MARQUEE]
-    parts, x = [], 0.0
-    for word, w in zip(MARQUEE, widths):
-        parts.append(f'<text x="{x:.1f}" y="60" textLength="{w:.1f}" lengthAdjust="spacingAndGlyphs">{word.upper()}</text>')
-        x += w + gap / 2
-        parts.append(f'<rect x="{x-5:.1f}" y="43" width="10" height="10" transform="rotate(45 {x:.1f} 48)" fill="{BRIGHT}"/>')
-        x += gap / 2
-    loop = x
-    row = ''.join(parts)
+    """The site's skills billboard. A sliding row cuts words at the edges here, so it
+    shows one full row of whole words at a time and fades to the next row."""
+    from PIL import ImageFont
+    W, H, size, gap, hold = 1200, 96, 34, 64, 3.0
+    font = ImageFont.truetype('C:/Windows/Fonts/segoeuib.ttf', size)
+    words = [(w.upper(), font.getlength(w.upper())) for w in MARQUEE]
+    pages, row = [], []
+    for word in words:
+        if row and sum(w for _, w in row) + len(row) * gap + word[1] > W - 80:
+            pages.append(row)
+            row = []
+        row.append(word)
+    pages.append(row)
+    n = len(pages)
+    total = n * hold
+    end = 100 / n
+    out = []
+    for i, page in enumerate(pages):
+        x = (W - (sum(w for _, w in page) + (len(page) - 1) * gap)) / 2
+        parts = []
+        for j, (word, w) in enumerate(page):
+            parts.append(f'<text x="{x:.1f}" y="60" textLength="{w:.1f}" lengthAdjust="spacingAndGlyphs">{word}</text>')
+            x += w
+            if j < len(page) - 1:
+                c = x + gap / 2
+                parts.append(f'<rect x="{c-5:.1f}" y="43" width="10" height="10" transform="rotate(45 {c:.1f} 48)" fill="{BRIGHT}"/>')
+                x += gap
+        out.append(f'<g class="p" style="animation-delay:{i * hold - 0.0:.1f}s">{"".join(parts)}</g>')
     return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" aria-hidden="true">
 <style>
-.t{{font:800 {size}px {SANS};fill:{FG};letter-spacing:-.5px}}
-.run{{animation:run {loop/60:.1f}s linear infinite}}
-@keyframes run{{to{{transform:translateX(-{loop:.1f}px)}}}}
-@media (prefers-reduced-motion:reduce){{.run{{animation:none}}}}
+.t{{font:800 {size}px {SANS};fill:{FG}}}
+.p{{opacity:0;animation:page {total:.0f}s linear infinite}}
+@keyframes page{{0%{{opacity:0;transform:translateY(14px)}}{end*0.12:.2f}%{{opacity:1;transform:translateY(0)}}{end*0.88:.2f}%{{opacity:1;transform:translateY(0)}}{end:.2f}%,100%{{opacity:0;transform:translateY(-14px)}}}}
+@media (prefers-reduced-motion:reduce){{.p{{animation:none}}.p:first-child{{opacity:1}}}}
 </style>
 <rect width="{W}" height="{H}" fill="{BG}"/>
 <line x1="0" y1="0.5" x2="{W}" y2="0.5" stroke="{FG}" stroke-opacity=".14"/><line x1="0" y1="{H-0.5}" x2="{W}" y2="{H-0.5}" stroke="{FG}" stroke-opacity=".14"/>
-<g class="t"><g class="run"><g transform="translate(40 0)">{row}</g><g transform="translate({40+loop:.1f} 0)">{row}</g></g></g>
+<g class="t">{"".join(out)}</g>
 </svg>'''
 
 
