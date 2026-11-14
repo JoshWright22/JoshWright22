@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 52" width="220" height="52" role="img" aria-label="LINKEDIN">
+<rect width="220" height="52" fill="#0f0f0f"/>
+<rect x="0.5" y="0.5" width="219" height="51" fill="none" stroke="#fdfdfd" stroke-opacity=".25"/>
+<rect x="18" y="22" width="8" height="8" transform="rotate(45 22 26)" fill="#7ba6e8"/>
+<text x="118.0" y="31" text-anchor="middle" style="font:500 14px 'JetBrains Mono', Consolas, 'SFMono-Regular', Menlo, monospace;letter-spacing:3px;fill:#fdfdfd">LINKEDIN</text>
+</svg>

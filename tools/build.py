@@ -11,14 +11,24 @@ BG, FG, MUTED, ACCENT, BRIGHT = '#0f0f0f', '#fdfdfd', '#7a7a7a', '#4776ca', '#7b
 SANS = "Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif"
 MONO = "'JetBrains Mono', Consolas, 'SFMono-Regular', Menlo, monospace"
 
-NAV = ['JOSH WRIGHT', 'ABOUT', 'WORK', 'SKILLS', 'CONTACT']
+NAV = ['JOSH WRIGHT', 'ABOUT', 'WORK', 'CONTACT']
 MARQUEE = ['AI Systems', 'Machine Learning', 'AI Agents', 'Computer Vision', 'AI for Animation',
            'Model Fine-Tuning', 'Reinforcement Learning', 'PyTorch', 'CUDA', 'Python', 'Motion Tracking',
            'Animation Tools', 'Graphics', 'Go', 'C++', 'C#', 'Unreal Engine', 'Devlogs']
-# (site poster, out name)
-POSTERS = [('unomi-tracking', 'unomi'), ('trust-no-one', 'trust-no-one'), ('codee', '127'),
-           ('animation', 'reel'), ('gdcc-map', 'gdcc'), ('atomoc-shelis', 'atomoc'),
-           ('gobspin', 'gob-spin'), ('slush-rush', 'slush-rush')]
+PROJECTS = [  # (site poster, slug on the site, title, result, tags)
+    ('unomi-tracking', 'unomi', 'UNOMi', 'Two-time Emmy-nominated studio', 'SWE INTERN · ML · AZURE'),
+    ('trust-no-one', 'trust-no-one', 'Trust No One', 'Placed #9 of 2,253 games', 'UNITY · C# · TEAM LEAD'),
+    ('codee', 'theres-no-place-like-127-0-0-1', "There's No Place Like 127.0.0.1",
+     'Highest scored pitch at the AZ Game Cup', 'UNITY · C# · PROC GEN'),
+    ('animation', '3d-animation-reel', '3D Animation Reel', 'TV quality animation', 'MAYA · KEYFRAME'),
+    ('gdcc-map', 'game-dev-club-club', 'Game Dev Club Club', 'Created a club across 104 universities', 'REACT · EVENTS'),
+    ('atomoc-shelis', 'atomoc-shelis', 'AtOMoC SHeLiS', 'Placed #12 of 150 games', 'GODOT · SOLO'),
+    ('gobspin', 'gob-spin', 'Gob Spin', 'Placed #140 of 3,498 games', 'UNITY · C# · PHYSICS'),
+    ('slush-rush', 'slush-rush', 'Slush Rush', 'Placed #69 of 434 games', 'GODOT · PYTHON'),
+]
+CONTACT = [('PORTFOLIO', 'https://joshwright22.github.io/'), ('EMAIL', 'mailto:joshwright0322@gmail.com'),
+           ('LINKEDIN', 'https://www.linkedin.com/in/joshua-wright-a94143338/'),
+           ('YOUTUBE', 'https://www.youtube.com/@JoshWright_Dev'), ('X', 'https://x.com/joshwright_dev')]
 
 
 def key(x, y, hl, hr, delay):
@@ -118,29 +128,107 @@ def marquee():
 </svg>'''
 
 
-def section(label, num):
-    """Section divider in the site's mono label style."""
-    W, H = 1200, 70
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" role="img" aria-label="{label}">
+def esc(t):
+    return t.replace('&', '&amp;').replace('<', '&lt;').replace("'", '&#39;').replace('"', '&quot;')
+
+
+def wrap(text, size, width, bold=False):
+    from PIL import ImageFont
+    font = ImageFont.truetype('C:/Windows/Fonts/segoeuib.ttf' if bold else 'C:/Windows/Fonts/segoeui.ttf', size)
+    lines, line = [], ''
+    for word in text.split():
+        test = f'{line} {word}'.strip()
+        if line and font.getlength(test) > width:
+            lines.append(line)
+            line = word
+        else:
+            line = test
+    return lines + [line]
+
+
+ABOUT = ('AI engineer finishing a B.S. in Computer Science at ASU in May 2027. At UNOMi I fine-tune the '
+         'vision models behind markerless motion capture. I started out keyframing characters by hand, '
+         'so animation is where I want to take AI next.')
+
+
+def about():
+    W, lh = 1200, 36
+    lines = wrap(ABOUT, 24, W - 80)
+    H = 96 + len(lines) * lh + 40
+    text = ''.join(f'<text x="40" y="{96 + i * lh}">{esc(l)}</text>' for i, l in enumerate(lines))
+    look = 96 + len(lines) * lh + 10
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" role="img" aria-label="{esc(ABOUT)}">
 <rect width="{W}" height="{H}" fill="{BG}"/>
-<text x="40" y="44" style="font:500 13px {MONO};letter-spacing:3px;fill:{BRIGHT}">{num}</text>
-<text x="90" y="44" style="font:800 26px {SANS};letter-spacing:-.5px;fill:{FG}">{label.upper()}</text>
-<line x1="40" y1="{H-1}" x2="{W-40}" y2="{H-1}" stroke="{FG}" stroke-opacity=".14"/>
-<rect x="{W-44}" y="{H-5}" width="8" height="8" transform="rotate(45 {W-40} {H-1})" fill="{BG}" stroke="{FG}"/>
+<text x="40" y="48" style="font:500 14px {MONO};letter-spacing:3px;fill:{BRIGHT}">01  ABOUT</text>
+<g style="font:400 24px {SANS};fill:{FG}">{text}</g>
+<text x="40" y="{look}" style="font:500 14px {MONO};letter-spacing:2px;fill:{MUTED}">LOOKING FOR  <tspan fill="{FG}">NEW GRAD SWE · ML · COMPUTER VISION · GRAPHICS · ANIMATION TOOLS · GAMES</tspan></text>
+<line x1="0" y1="{H-0.5}" x2="{W}" y2="{H-0.5}" stroke="{FG}" stroke-opacity=".14"/>
 </svg>'''
 
 
-def posters():
-    for src, name in POSTERS:
-        im = Image.open(SITE / 'assets' / f'{src}-poster.jpg').convert('RGB')
-        ImageOps.fit(im, (640, 360), Image.LANCZOS).save(OUT / f'{name}.jpg', quality=82, optimize=True)
+def card(i, poster, title, result, tags):
+    """One project card: still on the left, number, title, result and tags on the right."""
+    import base64
+    import io
+    W, H, iw, ih = 600, 210, 300, 169
+    im = ImageOps.fit(Image.open(SITE / 'assets' / f'{poster}-poster.jpg').convert('RGB'), (iw * 2, ih * 2), Image.LANCZOS)
+    buf = io.BytesIO()
+    im.save(buf, 'JPEG', quality=78, optimize=True)
+    data = base64.b64encode(buf.getvalue()).decode()
+    tx, tw = 20 + iw + 22, W - iw - 62
+    parts, y = [], 72
+    for line in wrap(title, 24, tw, bold=True):
+        parts.append(f'<text x="{tx}" y="{y}" style="font:800 24px {SANS};fill:{FG}">{esc(line)}</text>')
+        y += 30
+    y += 2
+    for line in wrap(result, 16, tw):
+        parts.append(f'<text x="{tx}" y="{y}" style="font:400 16px {SANS};fill:{BRIGHT}">{esc(line)}</text>')
+        y += 22
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" role="img" aria-label="{esc(title)}: {esc(result)}">
+<rect width="{W}" height="{H}" fill="{BG}"/>
+<rect x="0.5" y="0.5" width="{W-1}" height="{H-1}" fill="none" stroke="{FG}" stroke-opacity=".14"/>
+<image x="20" y="20" width="{iw}" height="{ih}" preserveAspectRatio="xMidYMid slice" href="data:image/jpeg;base64,{data}"/>
+<text x="{tx}" y="40" style="font:500 13px {MONO};letter-spacing:3px;fill:{MUTED}">{i:02d}</text>
+{''.join(parts)}
+<text x="{tx}" y="{20 + ih - 2}" style="font:500 12px {MONO};letter-spacing:1.5px;fill:{MUTED}">{esc(tags)}</text>
+</svg>'''
+
+
+def pill(label):
+    W, H = 220, 52
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" role="img" aria-label="{label}">
+<rect width="{W}" height="{H}" fill="{BG}"/>
+<rect x="0.5" y="0.5" width="{W-1}" height="{H-1}" fill="none" stroke="{FG}" stroke-opacity=".25"/>
+<rect x="18" y="22" width="8" height="8" transform="rotate(45 22 26)" fill="{BRIGHT}"/>
+<text x="{W/2 + 8}" y="31" text-anchor="middle" style="font:500 14px {MONO};letter-spacing:3px;fill:{FG}">{label}</text>
+</svg>'''
+
+
+def readme():
+    site = 'https://joshwright22.github.io'
+    # No whitespace between the images, so the cards sit edge to edge at the header's width.
+    cards = ''.join(f'<a href="{site}/projects/{slug}/"><img src="assets/card-{slug}.svg" alt="{esc(title)}: {result}" width="50%"></a>'
+                    for _, slug, title, result, _ in PROJECTS)
+    pills = ''.join(f'<a href="{url}"><img src="assets/link-{label.lower()}.svg" alt="{label.title()}" width="20%"></a>'
+                    for label, url in CONTACT)
+    return f'''<a href="{site}/"><img src="assets/header.svg" alt="Josh Wright, AI Engineer" width="100%"></a>
+<img src="assets/marquee.svg" alt="" width="100%">
+<img src="assets/about.svg" alt="{esc(ABOUT)}" width="100%">
+<p>{cards}</p>
+<p>{pills}</p>
+'''
 
 
 if __name__ == '__main__':
     OUT.mkdir(exist_ok=True)
+    for old in OUT.iterdir():
+        old.unlink()
     (OUT / 'header.svg').write_text(header(), encoding='utf-8')
     (OUT / 'marquee.svg').write_text(marquee(), encoding='utf-8')
-    for label, num in [('About', '01'), ('Work', '02'), ('Skills', '03'), ('Contact', '04')]:
-        (OUT / f'section-{label.lower()}.svg').write_text(section(label, num), encoding='utf-8')
-    posters()
+    (OUT / 'about.svg').write_text(about(), encoding='utf-8')
+    for i, (poster, slug, title, result, tags) in enumerate(PROJECTS, 1):
+        (OUT / f'card-{slug}.svg').write_text(card(i, poster, title, result, tags), encoding='utf-8')
+    for label, _ in CONTACT:
+        (OUT / f'link-{label.lower()}.svg').write_text(pill(label), encoding='utf-8')
+    (ROOT / 'README.md').write_text(readme(), encoding='utf-8')
     print('built', len(list(OUT.iterdir())), 'files')

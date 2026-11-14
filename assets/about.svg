@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 244" width="1200" height="244" role="img" aria-label="AI engineer finishing a B.S. in Computer Science at ASU in May 2027. At UNOMi I fine-tune the vision models behind markerless motion capture. I started out keyframing characters by hand, so animation is where I want to take AI next.">
+<rect width="1200" height="244" fill="#0f0f0f"/>
+<text x="40" y="48" style="font:500 14px 'JetBrains Mono', Consolas, 'SFMono-Regular', Menlo, monospace;letter-spacing:3px;fill:#7ba6e8">01  ABOUT</text>
+<g style="font:400 24px Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;fill:#fdfdfd"><text x="40" y="96">AI engineer finishing a B.S. in Computer Science at ASU in May 2027. At UNOMi I fine-tune the vision</text><text x="40" y="132">models behind markerless motion capture. I started out keyframing characters by hand, so animation is</text><text x="40" y="168">where I want to take AI next.</text></g>
+<text x="40" y="214" style="font:500 14px 'JetBrains Mono', Consolas, 'SFMono-Regular', Menlo, monospace;letter-spacing:2px;fill:#7a7a7a">LOOKING FOR  <tspan fill="#fdfdfd">NEW GRAD SWE · ML · COMPUTER VISION · GRAPHICS · ANIMATION TOOLS · GAMES</tspan></text>
+<line x1="0" y1="243.5" x2="1200" y2="243.5" stroke="#fdfdfd" stroke-opacity=".14"/>
+</svg>
