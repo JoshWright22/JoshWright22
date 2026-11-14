@@ -11,7 +11,7 @@ BG, FG, MUTED, ACCENT, BRIGHT = '#0f0f0f', '#fdfdfd', '#7a7a7a', '#4776ca', '#7b
 SANS = "Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif"
 MONO = "'JetBrains Mono', Consolas, 'SFMono-Regular', Menlo, monospace"
 
-NAV = ['JOSH WRIGHT', 'ABOUT', 'UNOMI', 'TNO', '127', 'REEL', 'GDCC', 'ATOMOC', 'GOB', 'SLUSH', 'SKILLS', 'CONTACT']
+NAV = ['JOSH WRIGHT', 'ABOUT', 'WORK', 'SKILLS', 'CONTACT']
 MARQUEE = ['AI Systems', 'Machine Learning', 'AI Agents', 'Computer Vision', 'AI for Animation',
            'Model Fine-Tuning', 'Reinforcement Learning', 'PyTorch', 'CUDA', 'Python', 'Motion Tracking',
            'Animation Tools', 'Graphics', 'Go', 'C++', 'C#', 'Unreal Engine', 'Devlogs']
@@ -31,8 +31,8 @@ def key(x, y, hl, hr, delay):
 
 
 def header():
-    W, H = 1200, 460
-    nav_y, tick_y = 34, 62
+    W, H = 1200, 500
+    nav_y, tick_y = 36, 64
     slot = W / len(NAV)
     nav, ticks = [], []
     for i, label in enumerate(NAV):
@@ -40,16 +40,17 @@ def header():
         nav.append(f'<text x="{x}" y="{nav_y}" text-anchor="middle">{label}</text>')
         ticks.append(f'<rect x="{x-4}" y="{tick_y-4}" width="8" height="8" transform="rotate(45 {x} {tick_y})" fill="{BG}" stroke="{FG}" stroke-width="1"/>')
     small = ''.join(f'<line x1="{x}" y1="{tick_y-(4 if x % 50 == 0 else 2)}" x2="{x}" y2="{tick_y+2}"/>' for x in range(0, W + 1, 10))
-    main = 'M0,330 C110,200 200,105 300,105 C410,105 500,370 610,370 C720,370 860,150 960,150 C1040,150 1110,250 1160,330'
-    ghost = 'M0,150 C140,280 260,390 380,390 C500,390 620,130 740,130 C860,130 980,220 1060,280'
-    keys = (key(300, 105, (250, 105), (350, 105), 1.1) + key(610, 370, (555, 384), (665, 356), 1.5)
-            + key(960, 150, (910, 150), (1010, 150), 1.9) + key(380, 390, (330, 390), (430, 390), 1.3)
-            + key(740, 130, (690, 130), (790, 130), 1.7))
-    grid = ''.join(f'<line x1="0" y1="{y}" x2="{W}" y2="{y}"/>' for y in (160, 270, 380))
+    # Curves stay in the band above the divider so they never cross the name.
+    main = 'M-20,260 C80,200 170,120 280,120 C400,120 480,290 600,290 C720,290 820,130 930,130 C1030,130 1120,230 1220,260'
+    ghost = 'M-20,140 C100,190 220,280 360,280 C500,280 600,150 740,150 C880,150 1000,250 1220,220'
+    keys = (key(280, 120, (230, 120), (330, 120), 1.1) + key(600, 290, (545, 290), (655, 290), 1.5)
+            + key(930, 130, (880, 130), (980, 130), 1.9) + key(360, 280, (310, 280), (410, 280), 1.3)
+            + key(740, 150, (690, 150), (790, 150), 1.7))
+    grid = ''.join(f'<line x1="0" y1="{y}" x2="{W}" y2="{y}"/>' for y in (150, 230, 310))
     return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" role="img" aria-label="Josh Wright, AI Engineer">
 <style>
-.nav{{font:500 11px {MONO};letter-spacing:1.5px;fill:{FG}}}
-.draw{{stroke-dasharray:1600;stroke-dashoffset:1600;animation:draw 2.4s cubic-bezier(.22,1,.36,1) .2s forwards}}
+.nav{{font:500 15px {MONO};letter-spacing:3px;fill:{FG}}}
+.draw{{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 2.4s cubic-bezier(.22,1,.36,1) .2s forwards}}
 .k{{opacity:0;animation:pop .6s ease forwards}}
 .head{{animation:play 9s linear infinite}}
 .name{{font:900 92px {SANS};letter-spacing:-3px;fill:{FG}}}
@@ -65,12 +66,13 @@ def header():
 <g stroke="{FG}" stroke-opacity=".35">{small}</g>
 <line x1="0" y1="{tick_y+2}" x2="{W}" y2="{tick_y+2}" stroke="{FG}" stroke-opacity=".14"/>
 {''.join(ticks)}
-<path class="draw" d="{ghost}" fill="none" stroke="#5b6b88" stroke-width="1.4"/>
-<path class="draw" d="{main}" fill="none" stroke="{ACCENT}" stroke-width="2.4"/>
+<path class="draw" pathLength="1" d="{ghost}" fill="none" stroke="#5b6b88" stroke-width="1.4"/>
+<path class="draw" pathLength="1" d="{main}" fill="none" stroke="{ACCENT}" stroke-width="2.4"/>
 {keys}
-<g class="head"><circle cx="0" cy="{tick_y-26}" r="5" fill="{BRIGHT}"/><line x1="0" y1="{tick_y-20}" x2="0" y2="{H}" stroke="{BRIGHT}" stroke-opacity=".35"/></g>
-<text class="name" x="40" y="{H-58}">Josh Wright</text>
-<text class="role" x="44" y="{H-26}">AI ENGINEER  ·  ASU CS '27  ·  TEMPE, AZ</text>
+<g class="head"><circle cx="0" cy="{tick_y-26}" r="5" fill="{BRIGHT}"/><line x1="0" y1="{tick_y-20}" x2="0" y2="330" stroke="{BRIGHT}" stroke-opacity=".35"/></g>
+<line x1="0" y1="340" x2="{W}" y2="340" stroke="{FG}" stroke-opacity=".14"/>
+<text class="name" x="40" y="{H-64}">Josh Wright</text>
+<text class="role" x="44" y="{H-28}">AI ENGINEER  ·  ASU CS '27  ·  TEMPE, AZ</text>
 </svg>'''
 
 
