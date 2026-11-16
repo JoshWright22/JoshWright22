@@ -12,15 +12,19 @@ SANS = "Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif"
 MONO = "'JetBrains Mono', Consolas, 'SFMono-Regular', Menlo, monospace"
 
 NAV = ['JOSH WRIGHT', 'ABOUT', 'WORK', 'CONTACT']
-MARQUEE = ['AI Systems', 'Machine Learning', 'AI Agents', 'Computer Vision', 'AI for Animation',
-           'Model Fine-Tuning', 'Reinforcement Learning', 'PyTorch', 'CUDA', 'Python', 'Motion Tracking',
-           'Animation Tools', 'Graphics', 'Go', 'C++', 'C#', 'Unreal Engine', 'Devlogs']
+MARQUEE = ['Model Training', 'Fine-Tuning', 'PyTorch', 'CUDA', 'Reinforcement Learning', 'PPO', 'Self-Play',
+           'Computer Vision', 'Motion Capture', 'Forecasting', 'LLM Evaluation', 'AI Agents', 'Benchmarking',
+           'Azure GPUs', 'Python', 'C++', 'AI for Animation', 'Games']
+# Only projects other people used or played, or that won or scored something (Josh 11/16).
 PROJECTS = [  # (site poster, slug on the site, title, result, tags)
-    ('unomi-tracking', 'unomi', 'UNOMi', 'Two-time Emmy-nominated studio', 'SWE INTERN · ML · AZURE'),
+    ('unomi-tracking', 'unomi', 'UNOMi', '2.8x faster motion capture, same accuracy', 'SWE INTERN · CV · AZURE GPUS'),
+    ('battlecode', 'cambridge-battlecode-2026', 'Cambridge Battlecode 2026',
+     'Mined 110,000 ladder matches, trained on 6M turns', 'CUDA · PPO · SELF-PLAY'),
+    ('nanotsfm-forecast', 'nanotsfm-forecasting', 'nanoTSFM Forecasting',
+     '17% lower error than the nanoTSFM record', 'PYTORCH · FORECASTING'),
     ('trust-no-one', 'trust-no-one', 'Trust No One', 'Placed #9 of 2,253 games', 'UNITY · C# · TEAM LEAD'),
     ('codee', 'theres-no-place-like-127-0-0-1', "There's No Place Like 127.0.0.1",
      'Highest scored pitch at the AZ Game Cup', 'UNITY · C# · PROC GEN'),
-    ('animation', '3d-animation-reel', '3D Animation Reel', 'TV quality animation', 'MAYA · KEYFRAME'),
     ('gdcc-map', 'game-dev-club-club', 'Game Dev Club Club', 'Created a club across 104 universities', 'REACT · EVENTS'),
     ('atomoc-shelis', 'atomoc-shelis', 'AtOMoC SHeLiS', 'Placed #12 of 150 games', 'GODOT · SOLO'),
     ('gobspin', 'gob-spin', 'Gob Spin', 'Placed #140 of 3,498 games', 'UNITY · C# · PHYSICS'),
@@ -82,7 +86,7 @@ def header():
 <g class="head"><circle cx="0" cy="{tick_y-26}" r="5" fill="{BRIGHT}"/><line x1="0" y1="{tick_y-20}" x2="0" y2="330" stroke="{BRIGHT}" stroke-opacity=".35"/></g>
 <line x1="0" y1="340" x2="{W}" y2="340" stroke="{FG}" stroke-opacity=".14"/>
 <text class="name" x="40" y="{H-64}">Josh Wright</text>
-<text class="role" x="44" y="{H-28}">AI ENGINEER  ·  ASU CS '27  ·  TEMPE, AZ</text>
+<text class="role" x="44" y="{H-28}">AI ENGINEER  ·  TEACHING MACHINES TO MOVE  ·  ASU CS '27</text>
 </svg>'''
 
 
@@ -146,8 +150,9 @@ def wrap(text, size, width, bold=False):
     return lines + [line]
 
 
-ABOUT = ('AI engineer finishing a B.S. in Computer Science at ASU in May 2027. At UNOMi I fine-tune the '
-         'vision models behind markerless motion capture. I started out keyframing characters by hand, '
+ABOUT = ('AI engineer finishing a B.S. in Computer Science at ASU in May 2027. I train models, make them faster and check '
+         'them against real benchmarks. At UNOMi I made our markerless motion capture 2.8x faster at the same accuracy, '
+         'and on my own I train PPO agents on a CUDA simulator I wrote. I started out keyframing characters by hand, '
          'so animation is where I want to take AI next.')
 
 
@@ -161,7 +166,7 @@ def about():
 <rect width="{W}" height="{H}" fill="{BG}"/>
 <text x="40" y="48" style="font:500 14px {MONO};letter-spacing:3px;fill:{BRIGHT}">01  ABOUT</text>
 <g style="font:400 24px {SANS};fill:{FG}">{text}</g>
-<text x="40" y="{look}" style="font:500 14px {MONO};letter-spacing:2px;fill:{MUTED}">LOOKING FOR  <tspan fill="{FG}">NEW GRAD SWE · ML · COMPUTER VISION · GRAPHICS · ANIMATION TOOLS · GAMES</tspan></text>
+<text x="40" y="{look}" style="font:500 14px {MONO};letter-spacing:2px;fill:{MUTED}">LOOKING FOR  <tspan fill="{FG}">NEW GRAD AI / ML ENGINEER · COMPUTER VISION · RL · ANIMATION TOOLS</tspan></text>
 <line x1="0" y1="{H-0.5}" x2="{W}" y2="{H-0.5}" stroke="{FG}" stroke-opacity=".14"/>
 </svg>'''
 
@@ -171,10 +176,15 @@ def card(i, poster, title, result, tags):
     import base64
     import io
     W, H, iw, ih = 600, 210, 300, 169
-    im = ImageOps.fit(Image.open(SITE / 'assets' / f'{poster}-poster.jpg').convert('RGB'), (iw * 2, ih * 2), Image.LANCZOS)
+    # A still made here (tools/<name>-poster.jpg) wins over the site's, for a site panel with no video.
+    path = ROOT / 'tools' / f'{poster}-poster.jpg'
+    if not path.exists():
+        path = SITE / 'assets' / f'{poster}-poster.jpg'
+    im = ImageOps.fit(Image.open(path).convert('RGB'), (iw * 2, ih * 2), Image.LANCZOS)
     buf = io.BytesIO()
     im.save(buf, 'JPEG', quality=78, optimize=True)
     data = base64.b64encode(buf.getvalue()).decode()
+    still = f'<image x="20" y="20" width="{iw}" height="{ih}" preserveAspectRatio="xMidYMid slice" href="data:image/jpeg;base64,{data}"/>'
     tx, tw = 20 + iw + 22, W - iw - 62
     parts, y = [], 72
     for line in wrap(title, 24, tw, bold=True):
@@ -187,7 +197,7 @@ def card(i, poster, title, result, tags):
     return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" role="img" aria-label="{esc(title)}: {esc(result)}">
 <rect width="{W}" height="{H}" fill="{BG}"/>
 <rect x="0.5" y="0.5" width="{W-1}" height="{H-1}" fill="none" stroke="{FG}" stroke-opacity=".14"/>
-<image x="20" y="20" width="{iw}" height="{ih}" preserveAspectRatio="xMidYMid slice" href="data:image/jpeg;base64,{data}"/>
+{still}
 <text x="{tx}" y="40" style="font:500 13px {MONO};letter-spacing:3px;fill:{MUTED}">{i:02d}</text>
 {''.join(parts)}
 <text x="{tx}" y="{20 + ih - 2}" style="font:500 12px {MONO};letter-spacing:1.5px;fill:{MUTED}">{esc(tags)}</text>
