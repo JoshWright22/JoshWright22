@@ -18,11 +18,11 @@ MARQUEE = ['Model Training', 'Fine-Tuning', 'PyTorch', 'CUDA', 'Reinforcement Le
 # Only projects other people used or played, or that won or scored something (Josh 11/16).
 PROJECTS = [  # (site poster, slug on the site, title, result, tags)
     ('unomi-tracking', 'unomi', 'UNOMi', '2.8x faster motion capture, same accuracy', 'SWE INTERN · CV · AZURE GPUS'),
-    ('battlecode', 'cambridge-battlecode-2026', 'Cambridge Battlecode 2026',
-     'Mined 110,000 ladder matches, trained on 6M turns', 'CUDA · PPO · SELF-PLAY'),
     ('nanotsfm-forecast', 'nanotsfm-forecasting', 'nanoTSFM Forecasting',
      '17% lower error than the nanoTSFM record', 'PYTORCH · FORECASTING'),
     ('trust-no-one', 'trust-no-one', 'Trust No One', 'Placed #9 of 2,253 games', 'UNITY · C# · TEAM LEAD'),
+    ('battlecode', 'cambridge-battlecode-2026', 'Cambridge Battlecode 2026',
+     'Mined 110,000 ladder matches, trained on 6M turns', 'CUDA · PPO · SELF-PLAY'),
     ('codee', 'theres-no-place-like-127-0-0-1', "There's No Place Like 127.0.0.1",
      'Highest scored pitch at the AZ Game Cup', 'UNITY · C# · PROC GEN'),
     ('gdcc-map', 'game-dev-club-club', 'Game Dev Club Club', 'Created a club across 104 universities', 'REACT · EVENTS'),
