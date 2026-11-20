@@ -136,13 +136,29 @@ def esc(t):
     return t.replace('&', '&amp;').replace('<', '&lt;').replace("'", '&#39;').replace('"', '&quot;')
 
 
-def wrap(text, size, width, bold=False):
+def measure(text, size, bold=False, mono=False, spacing=0.0):
+    """Width of a line, the widest of the fonts a visitor may get (Segoe UI on Windows,
+    Arial/Helvetica on Mac and Linux), so wrapping leaves room on every system."""
     from PIL import ImageFont
-    font = ImageFont.truetype('C:/Windows/Fonts/segoeuib.ttf' if bold else 'C:/Windows/Fonts/segoeui.ttf', size)
+    if mono:
+        names = ['consola.ttf', 'cour.ttf']  # Consolas, then Courier New ~ Menlo/DejaVu Mono width
+    else:
+        names = ['segoeuib.ttf', 'arialbd.ttf'] if bold else ['segoeui.ttf', 'arial.ttf']
+    w = max(ImageFont.truetype(f'C:/Windows/Fonts/{n}', size).getlength(text) for n in names)
+    return w + spacing * max(len(text) - 1, 0)
+
+
+def fixed(text, size, bold=False, mono=False, spacing=0.0):
+    """textLength pins each line to one width, so a wider fallback font is squeezed to fit
+    instead of running past the edge or into its neighbour."""
+    return f'textLength="{measure(text, size, bold, mono, spacing):.1f}" lengthAdjust="spacingAndGlyphs"'
+
+
+def wrap(text, size, width, bold=False):
     lines, line = [], ''
     for word in text.split():
         test = f'{line} {word}'.strip()
-        if line and font.getlength(test) > width:
+        if line and measure(test, size, bold) > width:
             lines.append(line)
             line = word
         else:
@@ -160,13 +176,14 @@ def about():
     W, lh = 1200, 36
     lines = wrap(ABOUT, 24, W - 80)
     H = 96 + len(lines) * lh + 40
-    text = ''.join(f'<text x="40" y="{96 + i * lh}">{esc(l)}</text>' for i, l in enumerate(lines))
+    text = ''.join(f'<text x="40" y="{96 + i * lh}" {fixed(l, 24)}>{esc(l)}</text>' for i, l in enumerate(lines))
     look = 96 + len(lines) * lh + 10
+    want = 'LOOKING FOR  NEW GRAD AI / ML ENGINEER · COMPUTER VISION · RL · ANIMATION TOOLS'
     return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" role="img" aria-label="{esc(ABOUT)}">
 <rect width="{W}" height="{H}" fill="{BG}"/>
 <text x="40" y="48" style="font:500 14px {MONO};letter-spacing:3px;fill:{BRIGHT}">01  ABOUT</text>
 <g style="font:400 24px {SANS};fill:{FG}">{text}</g>
-<text x="40" y="{look}" style="font:500 14px {MONO};letter-spacing:2px;fill:{MUTED}">LOOKING FOR  <tspan fill="{FG}">NEW GRAD AI / ML ENGINEER · COMPUTER VISION · RL · ANIMATION TOOLS</tspan></text>
+<text x="40" y="{look}" {fixed(want, 14, mono=True, spacing=2)} style="font:500 14px {MONO};letter-spacing:2px;fill:{MUTED}">LOOKING FOR  <tspan fill="{FG}">NEW GRAD AI / ML ENGINEER · COMPUTER VISION · RL · ANIMATION TOOLS</tspan></text>
 <line x1="0" y1="{H-0.5}" x2="{W}" y2="{H-0.5}" stroke="{FG}" stroke-opacity=".14"/>
 </svg>'''
 
@@ -186,21 +203,31 @@ def card(i, poster, title, result, tags):
     data = base64.b64encode(buf.getvalue()).decode()
     still = f'<image x="20" y="20" width="{iw}" height="{ih}" preserveAspectRatio="xMidYMid slice" href="data:image/jpeg;base64,{data}"/>'
     tx, tw = 20 + iw + 22, W - iw - 62
+    tag_y = 20 + ih - 2
+    # Shrink the title and result together until the result ends well above the tags.
+    for ts, rs in ((24, 16), (22, 15), (20, 14), (18, 13)):
+        tl, rl = wrap(title, ts, tw, bold=True), wrap(result, rs, tw)
+        last = 72 + (len(tl) - 1) * (ts + 6) + ts + 8 + (len(rl) - 1) * (rs + 6)
+        if last <= tag_y - 24:
+            break
     parts, y = [], 72
-    for line in wrap(title, 24, tw, bold=True):
-        parts.append(f'<text x="{tx}" y="{y}" style="font:800 24px {SANS};fill:{FG}">{esc(line)}</text>')
-        y += 30
-    y += 2
-    for line in wrap(result, 16, tw):
-        parts.append(f'<text x="{tx}" y="{y}" style="font:400 16px {SANS};fill:{BRIGHT}">{esc(line)}</text>')
-        y += 22
+    for line in tl:
+        parts.append(f'<text x="{tx}" y="{y}" {fixed(line, ts, bold=True)} style="font:800 {ts}px {SANS};fill:{FG}">{esc(line)}</text>')
+        y += ts + 6
+    y += rs - ts + 8 + 2
+    for line in rl:
+        parts.append(f'<text x="{tx}" y="{y}" {fixed(line, rs)} style="font:400 {rs}px {SANS};fill:{BRIGHT}">{esc(line)}</text>')
+        y += rs + 6
+    tag_size = 12
+    while measure(tags, tag_size, mono=True, spacing=1.5) > tw and tag_size > 9:
+        tag_size -= 1
     return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" role="img" aria-label="{esc(title)}: {esc(result)}">
 <rect width="{W}" height="{H}" fill="{BG}"/>
 <rect x="0.5" y="0.5" width="{W-1}" height="{H-1}" fill="none" stroke="{FG}" stroke-opacity=".14"/>
 {still}
 <text x="{tx}" y="40" style="font:500 13px {MONO};letter-spacing:3px;fill:{MUTED}">{i:02d}</text>
 {''.join(parts)}
-<text x="{tx}" y="{20 + ih - 2}" style="font:500 12px {MONO};letter-spacing:1.5px;fill:{MUTED}">{esc(tags)}</text>
+<text x="{tx}" y="{tag_y}" {fixed(tags, tag_size, mono=True, spacing=1.5)} style="font:500 {tag_size}px {MONO};letter-spacing:1.5px;fill:{MUTED}">{esc(tags)}</text>
 </svg>'''
 
 
