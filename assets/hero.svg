@@ -5,7 +5,7 @@
 .k{opacity:0;animation:pop .6s ease forwards}
 .head{animation:play 9s linear infinite}
 .name{font:900 92px Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;letter-spacing:-3px;fill:#fdfdfd}
-.role{font:500 15px 'JetBrains Mono', Consolas, 'SFMono-Regular', Menlo, monospace;letter-spacing:3px;fill:#7ba6e8}
+.role{font:500 18px 'JetBrains Mono', Consolas, 'SFMono-Regular', Menlo, monospace;letter-spacing:3.5px;white-space:pre;fill:#7ba6e8}
 @keyframes draw{to{stroke-dashoffset:0}}
 @keyframes pop{to{opacity:1}}
 @keyframes play{from{transform:translateX(0)}to{transform:translateX(1200px)}}
@@ -35,8 +35,8 @@
 <line x1="690" y1="150" x2="790" y2="150" stroke="#7a7a7a" stroke-width="1"/>
 <circle cx="690" cy="150" r="3.5" fill="#0f0f0f" stroke="#7a7a7a"/><circle cx="790" cy="150" r="3.5" fill="#0f0f0f" stroke="#7a7a7a"/>
 <rect x="736" y="146" width="8" height="8" fill="#fdfdfd"/></g>
-<g class="head"><circle cx="0" cy="38" r="5" fill="#7ba6e8"/><line x1="0" y1="44" x2="0" y2="330" stroke="#7ba6e8" stroke-opacity=".35"/></g>
-<line x1="0" y1="340" x2="1200" y2="340" stroke="#fdfdfd" stroke-opacity=".14"/>
-<text class="name" x="40" y="436">Josh Wright</text>
-<text class="role" x="44" y="472">GAME DEVELOPER  ·  MAKING COOL STUFF  ·  ASU CS '27</text>
+<g class="head"><circle cx="0" cy="38" r="5" fill="#7ba6e8"/><line x1="0" y1="44" x2="0" y2="316" stroke="#7ba6e8" stroke-opacity=".35"/></g>
+<line x1="0" y1="326" x2="1200" y2="326" stroke="#fdfdfd" stroke-opacity=".14"/>
+<text class="name" x="40" y="420">Josh Wright</text>
+<text class="role" x="44" y="472" xml:space="preserve">GAME DEVELOPER  ·  MAKING COOL STUFF  ·  ASU CS '27</text>
 </svg>

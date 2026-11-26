@@ -47,6 +47,9 @@ def key(x, y, hl, hr, delay):
 def header():
     W, H = 1200, 500
     nav_y, tick_y = 36, 64
+    # Name band: equal air above the name's caps and below the role line, and the role sits clear of
+    # the g's tail. No textLength here: each line is alone on its row, so fallback fonts keep even spacing.
+    band, name_y, role_y = 326, 420, 472
     slot = W / len(NAV)
     nav, ticks = [], []
     for i, label in enumerate(NAV):
@@ -68,7 +71,7 @@ def header():
 .k{{opacity:0;animation:pop .6s ease forwards}}
 .head{{animation:play 9s linear infinite}}
 .name{{font:900 92px {SANS};letter-spacing:-3px;fill:{FG}}}
-.role{{font:500 15px {MONO};letter-spacing:3px;fill:{BRIGHT}}}
+.role{{font:500 18px {MONO};letter-spacing:3.5px;white-space:pre;fill:{BRIGHT}}}
 @keyframes draw{{to{{stroke-dashoffset:0}}}}
 @keyframes pop{{to{{opacity:1}}}}
 @keyframes play{{from{{transform:translateX(0)}}to{{transform:translateX({W}px)}}}}
@@ -83,10 +86,10 @@ def header():
 <path class="draw" pathLength="1" d="{ghost}" fill="none" stroke="#5b6b88" stroke-width="1.4"/>
 <path class="draw" pathLength="1" d="{main}" fill="none" stroke="{ACCENT}" stroke-width="2.4"/>
 {keys}
-<g class="head"><circle cx="0" cy="{tick_y-26}" r="5" fill="{BRIGHT}"/><line x1="0" y1="{tick_y-20}" x2="0" y2="330" stroke="{BRIGHT}" stroke-opacity=".35"/></g>
-<line x1="0" y1="340" x2="{W}" y2="340" stroke="{FG}" stroke-opacity=".14"/>
-<text class="name" x="40" y="{H-64}">Josh Wright</text>
-<text class="role" x="44" y="{H-28}">GAME DEVELOPER  ·  MAKING COOL STUFF  ·  ASU CS '27</text>
+<g class="head"><circle cx="0" cy="{tick_y-26}" r="5" fill="{BRIGHT}"/><line x1="0" y1="{tick_y-20}" x2="0" y2="{band-10}" stroke="{BRIGHT}" stroke-opacity=".35"/></g>
+<line x1="0" y1="{band}" x2="{W}" y2="{band}" stroke="{FG}" stroke-opacity=".14"/>
+<text class="name" x="40" y="{name_y}">Josh Wright</text>
+<text class="role" x="44" y="{role_y}" xml:space="preserve">GAME DEVELOPER  ·  MAKING COOL STUFF  ·  ASU CS '27</text>
 </svg>'''
 
 
