@@ -86,7 +86,7 @@ def header():
 <g class="head"><circle cx="0" cy="{tick_y-26}" r="5" fill="{BRIGHT}"/><line x1="0" y1="{tick_y-20}" x2="0" y2="330" stroke="{BRIGHT}" stroke-opacity=".35"/></g>
 <line x1="0" y1="340" x2="{W}" y2="340" stroke="{FG}" stroke-opacity=".14"/>
 <text class="name" x="40" y="{H-64}">Josh Wright</text>
-<text class="role" x="44" y="{H-28}">GAME DEVELOPER  ·  MAKING GAMES AND THEIR CHARACTERS  ·  ASU CS '27</text>
+<text class="role" x="44" y="{H-28}">GAME DEVELOPER  ·  MAKING COOL STUFF  ·  ASU CS '27</text>
 </svg>'''
 
 
