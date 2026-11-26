@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 500" width="1200" height="500" role="img" aria-label="Josh Wright, AI Engineer">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 500" width="1200" height="500" role="img" aria-label="Josh Wright, Game Developer">
 <style>
 .nav{font:500 15px 'JetBrains Mono', Consolas, 'SFMono-Regular', Menlo, monospace;letter-spacing:3px;fill:#fdfdfd}
 .draw{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 2.4s cubic-bezier(.22,1,.36,1) .2s forwards}
@@ -38,5 +38,5 @@
 <g class="head"><circle cx="0" cy="38" r="5" fill="#7ba6e8"/><line x1="0" y1="44" x2="0" y2="330" stroke="#7ba6e8" stroke-opacity=".35"/></g>
 <line x1="0" y1="340" x2="1200" y2="340" stroke="#fdfdfd" stroke-opacity=".14"/>
 <text class="name" x="40" y="436">Josh Wright</text>
-<text class="role" x="44" y="472">AI ENGINEER  ·  TRAINING THE MODELS THAT BRING CHARACTERS TO LIFE  ·  ASU CS '27</text>
+<text class="role" x="44" y="472">GAME DEVELOPER  ·  MAKING GAMES AND THEIR CHARACTERS  ·  ASU CS '27</text>
 </svg>

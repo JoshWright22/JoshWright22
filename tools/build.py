@@ -61,7 +61,7 @@ def header():
             + key(930, 130, (880, 130), (980, 130), 1.9) + key(360, 280, (310, 280), (410, 280), 1.3)
             + key(740, 150, (690, 150), (790, 150), 1.7))
     grid = ''.join(f'<line x1="0" y1="{y}" x2="{W}" y2="{y}"/>' for y in (150, 230, 310))
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" role="img" aria-label="Josh Wright, AI Engineer">
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" role="img" aria-label="Josh Wright, Game Developer">
 <style>
 .nav{{font:500 15px {MONO};letter-spacing:3px;fill:{FG}}}
 .draw{{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 2.4s cubic-bezier(.22,1,.36,1) .2s forwards}}
@@ -86,7 +86,7 @@ def header():
 <g class="head"><circle cx="0" cy="{tick_y-26}" r="5" fill="{BRIGHT}"/><line x1="0" y1="{tick_y-20}" x2="0" y2="330" stroke="{BRIGHT}" stroke-opacity=".35"/></g>
 <line x1="0" y1="340" x2="{W}" y2="340" stroke="{FG}" stroke-opacity=".14"/>
 <text class="name" x="40" y="{H-64}">Josh Wright</text>
-<text class="role" x="44" y="{H-28}">AI ENGINEER  ·  TRAINING THE MODELS THAT BRING CHARACTERS TO LIFE  ·  ASU CS '27</text>
+<text class="role" x="44" y="{H-28}">GAME DEVELOPER  ·  MAKING GAMES AND THEIR CHARACTERS  ·  ASU CS '27</text>
 </svg>'''
 
 
@@ -166,10 +166,10 @@ def wrap(text, size, width, bold=False):
     return lines + [line]
 
 
-ABOUT = ('AI engineer finishing a B.S. in Computer Science at ASU in May 2027. I animate, build the tools '
-         'animators use and train the AI models behind them. At UNOMi I work on our animation plugins for Maya, Blender, Unreal and Cinema 4D '
-         'and made our markerless motion capture 2.8x faster at the same accuracy. On my own I train PPO agents on a CUDA '
-         'simulator I wrote, and I have a passion for hand keyframed animation.')
+ABOUT = ('Game developer finishing a B.S. in Computer Science at ASU in May 2027. My jam games placed #9 of 2,253 '
+         'in the Brackeys Game Jam and 2nd at the AZ Game Cup, and I am turning my roguelike AtOMoC SHeLiS into a Steam release. '
+         'At UNOMi I build animation plugins for Maya, Blender, Unreal and Cinema 4D and made our markerless motion capture '
+         '2.8x faster at the same accuracy. I also keyframe by hand and train AI agents to play games.')
 
 
 def about():
@@ -178,12 +178,12 @@ def about():
     H = 96 + len(lines) * lh + 40
     text = ''.join(f'<text x="40" y="{96 + i * lh}" {fixed(l, 24)}>{esc(l)}</text>' for i, l in enumerate(lines))
     look = 96 + len(lines) * lh + 10
-    want = 'LOOKING FOR  NEW GRAD AI ENGINEER · ANIMATION TOOLS · PIPELINE · ML'
+    want = 'LOOKING FOR  NEW GRAD GAME DEV · GAMEPLAY · ANIMATION TOOLS · GAME AI'
     return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" role="img" aria-label="{esc(ABOUT)}">
 <rect width="{W}" height="{H}" fill="{BG}"/>
 <text x="40" y="48" style="font:500 14px {MONO};letter-spacing:3px;fill:{BRIGHT}">01  ABOUT</text>
 <g style="font:400 24px {SANS};fill:{FG}">{text}</g>
-<text x="40" y="{look}" {fixed(want, 14, mono=True, spacing=2)} style="font:500 14px {MONO};letter-spacing:2px;fill:{MUTED}">LOOKING FOR  <tspan fill="{FG}">NEW GRAD AI ENGINEER · ANIMATION TOOLS · PIPELINE · ML</tspan></text>
+<text x="40" y="{look}" {fixed(want, 14, mono=True, spacing=2)} style="font:500 14px {MONO};letter-spacing:2px;fill:{MUTED}">LOOKING FOR  <tspan fill="{FG}">NEW GRAD GAME DEV · GAMEPLAY · ANIMATION TOOLS · GAME AI</tspan></text>
 <line x1="0" y1="{H-0.5}" x2="{W}" y2="{H-0.5}" stroke="{FG}" stroke-opacity=".14"/>
 </svg>'''
 
@@ -248,7 +248,7 @@ def readme():
                     for _, slug, title, result, _ in PROJECTS)
     pills = ''.join(f'<a href="{url}"><img src="assets/link-{label.lower()}.svg" alt="{label.title()}" width="20%"></a>'
                     for label, url in CONTACT)
-    return f'''<a href="{site}/"><img src="assets/hero.svg" alt="Josh Wright, AI Engineer" width="100%"></a>
+    return f'''<a href="{site}/"><img src="assets/hero.svg" alt="Josh Wright, Game Developer" width="100%"></a>
 <img src="assets/marquee.svg" alt="" width="100%">
 <img src="assets/about.svg" alt="{esc(ABOUT)}" width="100%">
 <p>{cards}</p>
