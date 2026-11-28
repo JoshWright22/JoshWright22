@@ -244,10 +244,20 @@ def pill(label):
 </svg>'''
 
 
+def project_links():
+    """Each project's own link (game page, leaderboard, product), read from the site's script.js by title."""
+    import re
+    js = (SITE / 'script.js').read_text(encoding='utf-8')
+    pairs = re.findall(r"title: '((?:[^'\\]|\\.)*)'(?:(?!title: ').)*?\blink: '([^']+)'", js, re.S)
+    return {t.replace("\\'", "'"): url for t, url in pairs}
+
+
 def readme():
     site = 'https://joshwright22.github.io'
+    links = project_links()
     # No whitespace between the images, so the cards sit edge to edge at the header's width.
-    cards = ''.join(f'<a href="{site}/projects/{slug}/"><img src="assets/card-{slug}.svg" alt="{esc(title)}: {result}" width="50%"></a>'
+    # Cards link to the project itself (Josh 11/28), falling back to its page on the site.
+    cards = ''.join(f'<a href="{links.get(title, f"{site}/projects/{slug}/")}"><img src="assets/card-{slug}.svg" alt="{esc(title)}: {result}" width="50%"></a>'
                     for _, slug, title, result, _ in PROJECTS)
     pills = ''.join(f'<a href="{url}"><img src="assets/link-{label.lower()}.svg" alt="{label.title()}" width="20%"></a>'
                     for label, url in CONTACT)
