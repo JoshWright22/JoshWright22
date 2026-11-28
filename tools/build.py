@@ -19,7 +19,7 @@ MARQUEE = ['Model Training', 'Fine-Tuning', 'PyTorch', 'CUDA', 'Reinforcement Le
 PROJECTS = [  # (site poster, slug on the site, title, result, tags)
     ('unomi-tracking', 'unomi', 'UNOMi', '2.8x faster motion capture, same accuracy', 'SWE INTERN · CV · AZURE GPUS'),
     ('nanotsfm-forecast', 'nanotsfm-forecasting', 'nanoTSFM Forecasting',
-     'Set records 4 and 6 on the nanoTSFM leaderboard', 'PYTORCH · FORECASTING'),
+     'Holds the nanoTSFM world record', 'PYTORCH · FORECASTING'),
     ('trust-no-one', 'trust-no-one', 'Trust No One', 'Placed #9 of 2,253 games', 'UNITY · C# · TEAM LEAD'),
     ('battlecode', 'cambridge-battlecode-2026', 'Cambridge Battlecode 2026',
      'Mined 110,000 ladder matches, trained on 6M turns', 'CUDA · PPO · SELF-PLAY'),
